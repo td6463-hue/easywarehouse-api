@@ -1,0 +1,4167 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Easy Warehouse API",
+    "version": "1.0.0",
+    "description": "REST API documentation for Easy Warehouse Management System"
+  },
+  "servers": [
+    {
+      "url": "/api/v1",
+      "description": "Current host (/api/v1)"
+    },
+    {
+      "url": "http://localhost:3000/api/v1",
+      "description": "Localhost server"
+    }
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "tags": [
+          "Root"
+        ],
+        "summary": "API Service Status",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "User Login",
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Login credentials",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "phone_number": {
+                  "type": "string",
+                  "example": "admin"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "password123"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "phone_number": {
+                    "example": "any"
+                  },
+                  "password": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/refresh": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Refresh Access Token",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/auth/me": {
+      "get": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Get current authenticated user profile",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/roles/": {
+      "get": {
+        "tags": [
+          "Roles"
+        ],
+        "summary": "List all roles from database",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Roles"
+        ],
+        "summary": "Create a new role with UUID",
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Role creation payload",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "rolename": {
+                  "type": "string",
+                  "example": "OPERATOR"
+                },
+                "status": {
+                  "type": "number",
+                  "example": 1
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "rolename": {
+                    "example": "any"
+                  },
+                  "status": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/roles/{id}": {
+      "get": {
+        "tags": [
+          "Roles"
+        ],
+        "summary": "Get role by ID",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Role UUID",
+            "example": "090dcb92-f56d-4b73-bd05-d2500cd2a216"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Roles"
+        ],
+        "summary": "Update an existing role",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Role UUID",
+            "example": "090dcb92-f56d-4b73-bd05-d2500cd2a216"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Role update payload",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "rolename": {
+                  "type": "string",
+                  "example": "OPERATOR_UPDATED"
+                },
+                "status": {
+                  "type": "number",
+                  "example": 1
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "rolename": {
+                    "example": "any"
+                  },
+                  "status": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Roles"
+        ],
+        "summary": "Delete role by ID",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Role UUID",
+            "example": "090dcb92-f56d-4b73-bd05-d2500cd2a216"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/users/": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "List all users from database",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Create a new user with UUID",
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "User creation payload",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "phonenumber": {
+                  "type": "string",
+                  "example": "02055998877"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "password123"
+                },
+                "name": {
+                  "type": "string",
+                  "example": "Keomany"
+                },
+                "lastname": {
+                  "type": "string",
+                  "example": "Sengdala"
+                },
+                "user_profile": {
+                  "type": "string",
+                  "example": "https://parking-st.freelixs.com/warehouse-user/avatar.png"
+                },
+                "status": {
+                  "type": "number",
+                  "example": 1
+                },
+                "role_id": {
+                  "type": "string",
+                  "example": "090dcb92-f56d-4b73-bd05-d2500cd2a216"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "phonenumber": {
+                    "example": "any"
+                  },
+                  "password": {
+                    "example": "any"
+                  },
+                  "name": {
+                    "example": "any"
+                  },
+                  "lastname": {
+                    "example": "any"
+                  },
+                  "user_profile": {
+                    "example": "any"
+                  },
+                  "img": {
+                    "example": "any"
+                  },
+                  "status": {
+                    "example": "any"
+                  },
+                  "role_id": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get user by ID",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "User UUID",
+            "example": "090dcb92-f56d-4b73-bd05-d2500cd2a216"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Update an existing user",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "User UUID",
+            "example": "090dcb92-f56d-4b73-bd05-d2500cd2a216"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "User update payload",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "phonenumber": {
+                  "type": "string",
+                  "example": "02055998877"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "newpassword123"
+                },
+                "name": {
+                  "type": "string",
+                  "example": "Keomany"
+                },
+                "lastname": {
+                  "type": "string",
+                  "example": "Updated"
+                },
+                "user_profile": {
+                  "type": "string",
+                  "example": "https://parking-st.freelixs.com/warehouse-user/avatar-updated.png"
+                },
+                "status": {
+                  "type": "number",
+                  "example": 1
+                },
+                "role_id": {
+                  "type": "string",
+                  "example": "090dcb92-f56d-4b73-bd05-d2500cd2a216"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "phonenumber": {
+                    "example": "any"
+                  },
+                  "password": {
+                    "example": "any"
+                  },
+                  "name": {
+                    "example": "any"
+                  },
+                  "lastname": {
+                    "example": "any"
+                  },
+                  "user_profile": {
+                    "example": "any"
+                  },
+                  "img": {
+                    "example": "any"
+                  },
+                  "status": {
+                    "example": "any"
+                  },
+                  "role_id": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Delete user by ID",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "User UUID",
+            "example": "090dcb92-f56d-4b73-bd05-d2500cd2a216"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/equipments/": {
+      "get": {
+        "tags": [
+          "Equipment"
+        ],
+        "summary": "List all equipments",
+        "description": "",
+        "parameters": [
+          {
+            "name": "branch_id",
+            "in": "query",
+            "description": "Filter by branch UUID",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "store_id",
+            "in": "query",
+            "description": "Filter by store UUID",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "category_id",
+            "in": "query",
+            "description": "Filter by category UUID",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sub_category_id",
+            "in": "query",
+            "description": "Filter by sub-category UUID",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "pack_id",
+            "in": "query",
+            "description": "Filter by master pack ID",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "group_serial_number",
+            "in": "query",
+            "description": "Alias for pack_id",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "Filter by status (1=Available, 2=In Use, 3=Maintenance, 0=Out of Service)",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Equipment"
+        ],
+        "summary": "Create a new equipment item",
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Equipment creation payload",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "equipment_code": {
+                  "type": "string",
+                  "example": "EQ-SCN-001"
+                },
+                "equipment_name": {
+                  "type": "string",
+                  "example": "Zebra TC21 Barcode Scanner"
+                },
+                "category_id": {
+                  "type": "string",
+                  "example": "090dcb92-f56d-4b73-bd05-d2500cd2a216"
+                },
+                "sub_category_id": {
+                  "type": "string",
+                  "example": "090dcb92-f56d-4b73-bd05-d2500cd2a217"
+                },
+                "pack_id": {
+                  "type": "string",
+                  "example": "PACK-LOT-2026-08"
+                },
+                "branch_id": {
+                  "type": "string",
+                  "example": "cd50f93b-5417-481f-8715-944fc8941fb3"
+                },
+                "unit": {
+                  "type": "number",
+                  "example": 10
+                },
+                "in_use": {
+                  "type": "number",
+                  "example": 2
+                },
+                "broken_unit": {
+                  "type": "number",
+                  "example": 0
+                },
+                "cost": {
+                  "type": "number",
+                  "example": 4500000
+                },
+                "status": {
+                  "type": "number",
+                  "example": 1
+                },
+                "description": {
+                  "type": "string",
+                  "example": "Master pack #8 handheld scanners"
+                },
+                "img": {
+                  "type": "string",
+                  "example": "https://parking-st.freelixs.com/warehouse-equipment/scanner-001.jpg"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "equipment_code": {
+                    "example": "any"
+                  },
+                  "equipment_name": {
+                    "example": "any"
+                  },
+                  "category_id": {
+                    "example": "any"
+                  },
+                  "sub_category_id": {
+                    "example": "any"
+                  },
+                  "pack_id": {
+                    "example": "any"
+                  },
+                  "group_serial_number": {
+                    "example": "any"
+                  },
+                  "branch_id": {
+                    "example": "any"
+                  },
+                  "store_id": {
+                    "example": "any"
+                  },
+                  "unit": {
+                    "example": "any"
+                  },
+                  "in_use": {
+                    "example": "any"
+                  },
+                  "broken_unit": {
+                    "example": "any"
+                  },
+                  "cost": {
+                    "example": "any"
+                  },
+                  "status": {
+                    "example": "any"
+                  },
+                  "description": {
+                    "example": "any"
+                  },
+                  "img": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/equipments/{id}": {
+      "get": {
+        "tags": [
+          "Equipment"
+        ],
+        "summary": "Get equipment by ID",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Equipment UUID",
+            "example": "090dcb92-f56d-4b73-bd05-d2500cd2a216"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Equipment"
+        ],
+        "summary": "Update an existing equipment item",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Equipment UUID",
+            "example": "090dcb92-f56d-4b73-bd05-d2500cd2a216"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Equipment update payload",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "equipment_code": {
+                  "type": "string",
+                  "example": "EQ-SCN-001"
+                },
+                "equipment_name": {
+                  "type": "string",
+                  "example": "Zebra TC21 Barcode Scanner Updated"
+                },
+                "category_id": {
+                  "type": "string",
+                  "example": "090dcb92-f56d-4b73-bd05-d2500cd2a216"
+                },
+                "sub_category_id": {
+                  "type": "string",
+                  "example": "090dcb92-f56d-4b73-bd05-d2500cd2a217"
+                },
+                "pack_id": {
+                  "type": "string",
+                  "example": "PACK-LOT-2026-08"
+                },
+                "branch_id": {
+                  "type": "string",
+                  "example": "cd50f93b-5417-481f-8715-944fc8941fb3"
+                },
+                "unit": {
+                  "type": "number",
+                  "example": 10
+                },
+                "in_use": {
+                  "type": "number",
+                  "example": 3
+                },
+                "broken_unit": {
+                  "type": "number",
+                  "example": 1
+                },
+                "cost": {
+                  "type": "number",
+                  "example": 4500000
+                },
+                "status": {
+                  "type": "number",
+                  "example": 2
+                },
+                "description": {
+                  "type": "string",
+                  "example": "Assigned 3 units to picking zone"
+                },
+                "img": {
+                  "type": "string",
+                  "example": "https://parking-st.freelixs.com/warehouse-equipment/scanner-001.jpg"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "equipment_code": {
+                    "example": "any"
+                  },
+                  "equipment_name": {
+                    "example": "any"
+                  },
+                  "category_id": {
+                    "example": "any"
+                  },
+                  "sub_category_id": {
+                    "example": "any"
+                  },
+                  "pack_id": {
+                    "example": "any"
+                  },
+                  "group_serial_number": {
+                    "example": "any"
+                  },
+                  "branch_id": {
+                    "example": "any"
+                  },
+                  "store_id": {
+                    "example": "any"
+                  },
+                  "unit": {
+                    "example": "any"
+                  },
+                  "in_use": {
+                    "example": "any"
+                  },
+                  "broken_unit": {
+                    "example": "any"
+                  },
+                  "cost": {
+                    "example": "any"
+                  },
+                  "status": {
+                    "example": "any"
+                  },
+                  "description": {
+                    "example": "any"
+                  },
+                  "img": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Equipment"
+        ],
+        "summary": "Delete equipment by ID",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Equipment UUID",
+            "example": "090dcb92-f56d-4b73-bd05-d2500cd2a216"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/equipment-unit-ranges/": {
+      "get": {
+        "tags": [
+          "EquipmentUnitRange"
+        ],
+        "summary": "List all unit serial numbers",
+        "description": "",
+        "parameters": [
+          {
+            "name": "equipment_id",
+            "in": "query",
+            "description": "Filter by equipment UUID",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "pack_id",
+            "in": "query",
+            "description": "Filter by pack ID",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "Filter by status (Available, In Use, Maintenance, Out of Service)",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "description": "Search serial number (SN)",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "EquipmentUnitRange"
+        ],
+        "summary": "Loop insert serial numbers (e.g. start 1 to 10 creates Chair01 to Chair10 with status)",
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Unit range payload",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "equipment_id": {
+                  "type": "string",
+                  "example": "090dcb92-f56d-4b73-bd05-d2500cd2a216"
+                },
+                "prefix": {
+                  "type": "string",
+                  "example": "Chair"
+                },
+                "start_num": {
+                  "type": "number",
+                  "example": 1
+                },
+                "end_num": {
+                  "type": "number",
+                  "example": 10
+                },
+                "start_sn": {
+                  "type": "string",
+                  "example": "01"
+                },
+                "pack_id": {
+                  "type": "string",
+                  "example": "PACK-01"
+                },
+                "status": {
+                  "type": "string",
+                  "example": "Available"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "equipment_id": {
+                    "example": "any"
+                  },
+                  "prefix": {
+                    "example": "any"
+                  },
+                  "start_num": {
+                    "example": "any"
+                  },
+                  "end_num": {
+                    "example": "any"
+                  },
+                  "start_sn": {
+                    "example": "any"
+                  },
+                  "pack_id": {
+                    "example": "any"
+                  },
+                  "status": {
+                    "example": "any"
+                  },
+                  "SN": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/equipment-unit-ranges/equipment/{equipment_id}": {
+      "get": {
+        "tags": [
+          "EquipmentUnitRange"
+        ],
+        "summary": "Get all unit serial numbers for a specific equipment UUID",
+        "description": "",
+        "parameters": [
+          {
+            "name": "equipment_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Equipment UUID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "EquipmentUnitRange"
+        ],
+        "summary": "Delete all unit records for a specific equipment UUID",
+        "description": "",
+        "parameters": [
+          {
+            "name": "equipment_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Equipment UUID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/equipment-unit-ranges/{id}": {
+      "get": {
+        "tags": [
+          "EquipmentUnitRange"
+        ],
+        "summary": "Get single unit record by ID",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Range UUID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "EquipmentUnitRange"
+        ],
+        "summary": "Update an individual unit record (SN or status: Available, In Use, Maintenance, Out of Service)",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Range UUID"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Update payload",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "Maintenance"
+                },
+                "SN": {
+                  "type": "string",
+                  "example": "Chair05"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "SN": {
+                    "example": "any"
+                  },
+                  "status": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "EquipmentUnitRange"
+        ],
+        "summary": "Delete a unit record by ID",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Range UUID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/equipment-unit-ranges/bulk": {
+      "post": {
+        "tags": [
+          "EquipmentUnitRange"
+        ],
+        "summary": "Bulk create multiple ranges of serial numbers",
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Bulk range payload",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "equipment_id": {
+                  "type": "string",
+                  "example": "090dcb92-f56d-4b73-bd05-d2500cd2a216"
+                },
+                "pack_id": {
+                  "type": "string",
+                  "example": "PACK-01"
+                },
+                "status": {
+                  "type": "string",
+                  "example": "Available"
+                },
+                "ranges": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "start_num": {
+                        "type": "number",
+                        "example": 21
+                      },
+                      "end_num": {
+                        "type": "number",
+                        "example": 110
+                      },
+                      "prefix": {
+                        "type": "string",
+                        "example": "Chair"
+                      },
+                      "start_sn": {
+                        "type": "string",
+                        "example": "21"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "equipment_id": {
+                    "example": "any"
+                  },
+                  "pack_id": {
+                    "example": "any"
+                  },
+                  "status": {
+                    "example": "any"
+                  },
+                  "ranges": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/equipment-unit-ranges/bulk-status": {
+      "post": {
+        "tags": [
+          "EquipmentUnitRange"
+        ],
+        "summary": "Batch update status for multiple unit records",
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Bulk status update payload",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "range_ids": {
+                  "type": "array",
+                  "example": [
+                    "uuid-1",
+                    "uuid-2"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "status": {
+                  "type": "string",
+                  "example": "Maintenance"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "range_ids": {
+                    "example": "any"
+                  },
+                  "status": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/equipment-ranges/": {
+      "get": {
+        "tags": [
+          "EquipmentUnitRange"
+        ],
+        "summary": "List all unit serial numbers",
+        "description": "",
+        "parameters": [
+          {
+            "name": "equipment_id",
+            "in": "query",
+            "description": "Filter by equipment UUID",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "pack_id",
+            "in": "query",
+            "description": "Filter by pack ID",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "Filter by status (Available, In Use, Maintenance, Out of Service)",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "description": "Search serial number (SN)",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "EquipmentUnitRange"
+        ],
+        "summary": "Loop insert serial numbers (e.g. start 1 to 10 creates Chair01 to Chair10 with status)",
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Unit range payload",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "equipment_id": {
+                  "type": "string",
+                  "example": "090dcb92-f56d-4b73-bd05-d2500cd2a216"
+                },
+                "prefix": {
+                  "type": "string",
+                  "example": "Chair"
+                },
+                "start_num": {
+                  "type": "number",
+                  "example": 1
+                },
+                "end_num": {
+                  "type": "number",
+                  "example": 10
+                },
+                "start_sn": {
+                  "type": "string",
+                  "example": "01"
+                },
+                "pack_id": {
+                  "type": "string",
+                  "example": "PACK-01"
+                },
+                "status": {
+                  "type": "string",
+                  "example": "Available"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "equipment_id": {
+                    "example": "any"
+                  },
+                  "prefix": {
+                    "example": "any"
+                  },
+                  "start_num": {
+                    "example": "any"
+                  },
+                  "end_num": {
+                    "example": "any"
+                  },
+                  "start_sn": {
+                    "example": "any"
+                  },
+                  "pack_id": {
+                    "example": "any"
+                  },
+                  "status": {
+                    "example": "any"
+                  },
+                  "SN": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/equipment-ranges/equipment/{equipment_id}": {
+      "get": {
+        "tags": [
+          "EquipmentUnitRange"
+        ],
+        "summary": "Get all unit serial numbers for a specific equipment UUID",
+        "description": "",
+        "parameters": [
+          {
+            "name": "equipment_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Equipment UUID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "EquipmentUnitRange"
+        ],
+        "summary": "Delete all unit records for a specific equipment UUID",
+        "description": "",
+        "parameters": [
+          {
+            "name": "equipment_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Equipment UUID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/equipment-ranges/{id}": {
+      "get": {
+        "tags": [
+          "EquipmentUnitRange"
+        ],
+        "summary": "Get single unit record by ID",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Range UUID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "EquipmentUnitRange"
+        ],
+        "summary": "Update an individual unit record (SN or status: Available, In Use, Maintenance, Out of Service)",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Range UUID"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Update payload",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "Maintenance"
+                },
+                "SN": {
+                  "type": "string",
+                  "example": "Chair05"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "SN": {
+                    "example": "any"
+                  },
+                  "status": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "EquipmentUnitRange"
+        ],
+        "summary": "Delete a unit record by ID",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Range UUID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/equipment-ranges/bulk": {
+      "post": {
+        "tags": [
+          "EquipmentUnitRange"
+        ],
+        "summary": "Bulk create multiple ranges of serial numbers",
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Bulk range payload",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "equipment_id": {
+                  "type": "string",
+                  "example": "090dcb92-f56d-4b73-bd05-d2500cd2a216"
+                },
+                "pack_id": {
+                  "type": "string",
+                  "example": "PACK-01"
+                },
+                "status": {
+                  "type": "string",
+                  "example": "Available"
+                },
+                "ranges": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "start_num": {
+                        "type": "number",
+                        "example": 21
+                      },
+                      "end_num": {
+                        "type": "number",
+                        "example": 110
+                      },
+                      "prefix": {
+                        "type": "string",
+                        "example": "Chair"
+                      },
+                      "start_sn": {
+                        "type": "string",
+                        "example": "21"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "equipment_id": {
+                    "example": "any"
+                  },
+                  "pack_id": {
+                    "example": "any"
+                  },
+                  "status": {
+                    "example": "any"
+                  },
+                  "ranges": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/equipment-ranges/bulk-status": {
+      "post": {
+        "tags": [
+          "EquipmentUnitRange"
+        ],
+        "summary": "Batch update status for multiple unit records",
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Bulk status update payload",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "range_ids": {
+                  "type": "array",
+                  "example": [
+                    "uuid-1",
+                    "uuid-2"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "status": {
+                  "type": "string",
+                  "example": "Maintenance"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "range_ids": {
+                    "example": "any"
+                  },
+                  "status": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/equipment-unit-details/": {
+      "get": {
+        "tags": [
+          "EquipmentUnitDetail"
+        ],
+        "summary": "List all individual equipment units",
+        "description": "",
+        "parameters": [
+          {
+            "name": "equipment_id",
+            "in": "query",
+            "description": "Filter by equipment UUID",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "range_id",
+            "in": "query",
+            "description": "Filter by range UUID",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "Filter by status (1=Available, 2=In Use, 3=Broken, 4=Maintenance, 0=Lost)",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "description": "Search by serial number or note",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/equipment-unit-details/{id}": {
+      "get": {
+        "tags": [
+          "EquipmentUnitDetail"
+        ],
+        "summary": "Get single unit detail by ID",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Unit detail UUID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "EquipmentUnitDetail"
+        ],
+        "summary": "Update unit status and condition note (e.g. mark chair05 broken)",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Unit detail UUID",
+            "example": "090dcb92-f56d-4b73-bd05-d2500cd2a216"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Update payload (e.g. mark broken)",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "number",
+                  "example": 3
+                },
+                "condition_note": {
+                  "type": "string",
+                  "example": "Chair05 is broken - backrest damaged"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "example": "any"
+                  },
+                  "condition_note": {
+                    "example": "any"
+                  },
+                  "serial_number": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "EquipmentUnitDetail"
+        ],
+        "summary": "Delete a unit detail by ID",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Unit detail UUID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/equipment-unit-details/split-range/{range_id}": {
+      "post": {
+        "tags": [
+          "EquipmentUnitDetail"
+        ],
+        "summary": "Split a range into individual 1-by-1 unit records",
+        "description": "",
+        "parameters": [
+          {
+            "name": "range_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Range UUID to explode into individual unit records"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/equipment-unit-details/split-all/{equipment_id}": {
+      "post": {
+        "tags": [
+          "EquipmentUnitDetail"
+        ],
+        "summary": "Split all ranges of an equipment item into individual unit records",
+        "description": "",
+        "parameters": [
+          {
+            "name": "equipment_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Equipment UUID"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/equipment-unit-details/bulk-status": {
+      "post": {
+        "tags": [
+          "EquipmentUnitDetail"
+        ],
+        "summary": "Batch update status & condition note for multiple units",
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Bulk update payload",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "unit_detail_ids": {
+                  "type": "array",
+                  "example": [
+                    "uuid-1",
+                    "uuid-2"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "status": {
+                  "type": "number",
+                  "example": 3
+                },
+                "condition_note": {
+                  "type": "string",
+                  "example": "Broken - needs repair"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "unit_detail_ids": {
+                    "example": "any"
+                  },
+                  "status": {
+                    "example": "any"
+                  },
+                  "condition_note": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/equipment-units/": {
+      "get": {
+        "tags": [
+          "EquipmentUnitDetail"
+        ],
+        "summary": "List all individual equipment units",
+        "description": "",
+        "parameters": [
+          {
+            "name": "equipment_id",
+            "in": "query",
+            "description": "Filter by equipment UUID",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "range_id",
+            "in": "query",
+            "description": "Filter by range UUID",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "Filter by status (1=Available, 2=In Use, 3=Broken, 4=Maintenance, 0=Lost)",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "description": "Search by serial number or note",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/equipment-units/{id}": {
+      "get": {
+        "tags": [
+          "EquipmentUnitDetail"
+        ],
+        "summary": "Get single unit detail by ID",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Unit detail UUID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "EquipmentUnitDetail"
+        ],
+        "summary": "Update unit status and condition note (e.g. mark chair05 broken)",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Unit detail UUID",
+            "example": "090dcb92-f56d-4b73-bd05-d2500cd2a216"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Update payload (e.g. mark broken)",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "number",
+                  "example": 3
+                },
+                "condition_note": {
+                  "type": "string",
+                  "example": "Chair05 is broken - backrest damaged"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "example": "any"
+                  },
+                  "condition_note": {
+                    "example": "any"
+                  },
+                  "serial_number": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "EquipmentUnitDetail"
+        ],
+        "summary": "Delete a unit detail by ID",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Unit detail UUID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/equipment-units/split-range/{range_id}": {
+      "post": {
+        "tags": [
+          "EquipmentUnitDetail"
+        ],
+        "summary": "Split a range into individual 1-by-1 unit records",
+        "description": "",
+        "parameters": [
+          {
+            "name": "range_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Range UUID to explode into individual unit records"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/equipment-units/split-all/{equipment_id}": {
+      "post": {
+        "tags": [
+          "EquipmentUnitDetail"
+        ],
+        "summary": "Split all ranges of an equipment item into individual unit records",
+        "description": "",
+        "parameters": [
+          {
+            "name": "equipment_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Equipment UUID"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/equipment-units/bulk-status": {
+      "post": {
+        "tags": [
+          "EquipmentUnitDetail"
+        ],
+        "summary": "Batch update status & condition note for multiple units",
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Bulk update payload",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "unit_detail_ids": {
+                  "type": "array",
+                  "example": [
+                    "uuid-1",
+                    "uuid-2"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "status": {
+                  "type": "number",
+                  "example": 3
+                },
+                "condition_note": {
+                  "type": "string",
+                  "example": "Broken - needs repair"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "unit_detail_ids": {
+                    "example": "any"
+                  },
+                  "status": {
+                    "example": "any"
+                  },
+                  "condition_note": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/categories/": {
+      "get": {
+        "tags": [
+          "Categories"
+        ],
+        "summary": "List all categories",
+        "description": "",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "description": "Filter by status (1=Active, 0=Inactive)",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Categories"
+        ],
+        "summary": "Create a new category",
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Category creation payload",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "category_name": {
+                  "type": "string",
+                  "example": "Solar & Electronics"
+                },
+                "category_code": {
+                  "type": "string",
+                  "example": "CAT-ELEC"
+                },
+                "status": {
+                  "type": "number",
+                  "example": 1
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "category_name": {
+                    "example": "any"
+                  },
+                  "category_code": {
+                    "example": "any"
+                  },
+                  "status": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/categories/{id}": {
+      "get": {
+        "tags": [
+          "Categories"
+        ],
+        "summary": "Get category by ID",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Category UUID",
+            "example": "090dcb92-f56d-4b73-bd05-d2500cd2a216"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Categories"
+        ],
+        "summary": "Update an existing category",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Category UUID",
+            "example": "090dcb92-f56d-4b73-bd05-d2500cd2a216"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Category update payload",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "category_name": {
+                  "type": "string",
+                  "example": "Solar & Electronics Updated"
+                },
+                "category_code": {
+                  "type": "string",
+                  "example": "CAT-ELEC-V2"
+                },
+                "status": {
+                  "type": "number",
+                  "example": 1
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "category_name": {
+                    "example": "any"
+                  },
+                  "category_code": {
+                    "example": "any"
+                  },
+                  "status": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Categories"
+        ],
+        "summary": "Delete category by ID",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Category UUID",
+            "example": "090dcb92-f56d-4b73-bd05-d2500cd2a216"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/sub-categories/": {
+      "get": {
+        "tags": [
+          "SubCategories"
+        ],
+        "summary": "List all sub-categories",
+        "description": "",
+        "parameters": [
+          {
+            "name": "category_id",
+            "in": "query",
+            "description": "Filter by Category UUID",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "Filter by status (1=Active, 0=Inactive)",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "SubCategories"
+        ],
+        "summary": "Create a new sub-category",
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Sub-category payload",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "category_id": {
+                  "type": "string",
+                  "example": "b3be749c-e197-4e3e-94c4-5ec73938297c"
+                },
+                "sub_category_name": {
+                  "type": "string",
+                  "example": "Solar Inverters & Batteries"
+                },
+                "sub_category_code": {
+                  "type": "string",
+                  "example": "SUB-INV-01"
+                },
+                "status": {
+                  "type": "number",
+                  "example": 1
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "category_id": {
+                    "example": "any"
+                  },
+                  "sub_category_name": {
+                    "example": "any"
+                  },
+                  "sub_category_code": {
+                    "example": "any"
+                  },
+                  "status": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sub-categories/{id}": {
+      "get": {
+        "tags": [
+          "SubCategories"
+        ],
+        "summary": "Get sub-category by ID",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Sub-Category UUID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "SubCategories"
+        ],
+        "summary": "Update an existing sub-category",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Sub-Category UUID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "category_id": {
+                    "example": "any"
+                  },
+                  "sub_category_name": {
+                    "example": "any"
+                  },
+                  "sub_category_code": {
+                    "example": "any"
+                  },
+                  "status": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "SubCategories"
+        ],
+        "summary": "Delete sub-category by ID",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Sub-Category UUID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/subcategories/": {
+      "get": {
+        "tags": [
+          "SubCategories"
+        ],
+        "summary": "List all sub-categories",
+        "description": "",
+        "parameters": [
+          {
+            "name": "category_id",
+            "in": "query",
+            "description": "Filter by Category UUID",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "Filter by status (1=Active, 0=Inactive)",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "SubCategories"
+        ],
+        "summary": "Create a new sub-category",
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Sub-category payload",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "category_id": {
+                  "type": "string",
+                  "example": "b3be749c-e197-4e3e-94c4-5ec73938297c"
+                },
+                "sub_category_name": {
+                  "type": "string",
+                  "example": "Solar Inverters & Batteries"
+                },
+                "sub_category_code": {
+                  "type": "string",
+                  "example": "SUB-INV-01"
+                },
+                "status": {
+                  "type": "number",
+                  "example": 1
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "category_id": {
+                    "example": "any"
+                  },
+                  "sub_category_name": {
+                    "example": "any"
+                  },
+                  "sub_category_code": {
+                    "example": "any"
+                  },
+                  "status": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/subcategories/{id}": {
+      "get": {
+        "tags": [
+          "SubCategories"
+        ],
+        "summary": "Get sub-category by ID",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Sub-Category UUID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "SubCategories"
+        ],
+        "summary": "Update an existing sub-category",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Sub-Category UUID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "category_id": {
+                    "example": "any"
+                  },
+                  "sub_category_name": {
+                    "example": "any"
+                  },
+                  "sub_category_code": {
+                    "example": "any"
+                  },
+                  "status": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "SubCategories"
+        ],
+        "summary": "Delete sub-category by ID",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Sub-Category UUID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/stores/": {
+      "get": {
+        "tags": [
+          "Stores"
+        ],
+        "summary": "List all stores",
+        "description": "",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "description": "Filter by status (1=Active, 0=Inactive)",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Stores"
+        ],
+        "summary": "Create a new store",
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Store creation payload",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "store_code": {
+                  "type": "string",
+                  "example": "STR-HQ-01"
+                },
+                "store_name": {
+                  "type": "string",
+                  "example": "Easy Warehouse Retail Group"
+                },
+                "phone": {
+                  "type": "string",
+                  "example": "+856 20 5511 2233"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "contact@easy-warehouse.la"
+                },
+                "address": {
+                  "type": "string",
+                  "example": "Lane Xang Avenue, Chanthabouly District, Vientiane"
+                },
+                "status": {
+                  "type": "number",
+                  "example": 1
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "store_code": {
+                    "example": "any"
+                  },
+                  "store_name": {
+                    "example": "any"
+                  },
+                  "phone": {
+                    "example": "any"
+                  },
+                  "email": {
+                    "example": "any"
+                  },
+                  "address": {
+                    "example": "any"
+                  },
+                  "status": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stores/{id}": {
+      "get": {
+        "tags": [
+          "Stores"
+        ],
+        "summary": "Get store by ID with linked branches",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Store UUID",
+            "example": "090dcb92-f56d-4b73-bd05-d2500cd2a216"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Stores"
+        ],
+        "summary": "Update an existing store",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Store UUID",
+            "example": "090dcb92-f56d-4b73-bd05-d2500cd2a216"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Store update payload",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "store_code": {
+                  "type": "string",
+                  "example": "STR-HQ-01"
+                },
+                "store_name": {
+                  "type": "string",
+                  "example": "Easy Warehouse Retail Group Updated"
+                },
+                "phone": {
+                  "type": "string",
+                  "example": "+856 20 5511 2233"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "info@easy-warehouse.la"
+                },
+                "address": {
+                  "type": "string",
+                  "example": "Lane Xang Avenue, Chanthabouly District, Vientiane"
+                },
+                "status": {
+                  "type": "number",
+                  "example": 1
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "store_code": {
+                    "example": "any"
+                  },
+                  "store_name": {
+                    "example": "any"
+                  },
+                  "phone": {
+                    "example": "any"
+                  },
+                  "email": {
+                    "example": "any"
+                  },
+                  "address": {
+                    "example": "any"
+                  },
+                  "status": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Stores"
+        ],
+        "summary": "Delete store by ID",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Store UUID",
+            "example": "090dcb92-f56d-4b73-bd05-d2500cd2a216"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/branches/": {
+      "get": {
+        "tags": [
+          "Branches"
+        ],
+        "summary": "List all branches",
+        "description": "",
+        "parameters": [
+          {
+            "name": "store_id",
+            "in": "query",
+            "description": "Filter by parent store UUID",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "Filter by status (1=Active, 0=Inactive)",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Branches"
+        ],
+        "summary": "Create a new branch",
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Branch creation payload",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "store_id": {
+                  "type": "string",
+                  "example": "090dcb92-f56d-4b73-bd05-d2500cd2a216"
+                },
+                "branch_code": {
+                  "type": "string",
+                  "example": "BR-VTN-01"
+                },
+                "branch_name": {
+                  "type": "string",
+                  "example": "Vientiane Central Branch"
+                },
+                "phone": {
+                  "type": "string",
+                  "example": "+856 20 5511 8899"
+                },
+                "manager_name": {
+                  "type": "string",
+                  "example": "Bounmy Sisavath"
+                },
+                "address": {
+                  "type": "string",
+                  "example": "Dongpalane Road, Sisattanak District, Vientiane"
+                },
+                "status": {
+                  "type": "number",
+                  "example": 1
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "store_id": {
+                    "example": "any"
+                  },
+                  "branch_code": {
+                    "example": "any"
+                  },
+                  "branch_name": {
+                    "example": "any"
+                  },
+                  "phone": {
+                    "example": "any"
+                  },
+                  "manager_name": {
+                    "example": "any"
+                  },
+                  "address": {
+                    "example": "any"
+                  },
+                  "status": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/branches/{id}": {
+      "get": {
+        "tags": [
+          "Branches"
+        ],
+        "summary": "Get branch by ID",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Branch UUID",
+            "example": "090dcb92-f56d-4b73-bd05-d2500cd2a216"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Branches"
+        ],
+        "summary": "Update an existing branch",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Branch UUID",
+            "example": "090dcb92-f56d-4b73-bd05-d2500cd2a216"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Branch update payload",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "store_id": {
+                  "type": "string",
+                  "example": "090dcb92-f56d-4b73-bd05-d2500cd2a216"
+                },
+                "branch_code": {
+                  "type": "string",
+                  "example": "BR-VTN-01"
+                },
+                "branch_name": {
+                  "type": "string",
+                  "example": "Vientiane Central Branch Updated"
+                },
+                "phone": {
+                  "type": "string",
+                  "example": "+856 20 5511 8899"
+                },
+                "manager_name": {
+                  "type": "string",
+                  "example": "Bounmy Sisavath"
+                },
+                "address": {
+                  "type": "string",
+                  "example": "Dongpalane Road, Sisattanak District, Vientiane"
+                },
+                "status": {
+                  "type": "number",
+                  "example": 1
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "store_id": {
+                    "example": "any"
+                  },
+                  "branch_code": {
+                    "example": "any"
+                  },
+                  "branch_name": {
+                    "example": "any"
+                  },
+                  "phone": {
+                    "example": "any"
+                  },
+                  "manager_name": {
+                    "example": "any"
+                  },
+                  "address": {
+                    "example": "any"
+                  },
+                  "status": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Branches"
+        ],
+        "summary": "Delete branch by ID",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Branch UUID",
+            "example": "090dcb92-f56d-4b73-bd05-d2500cd2a216"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/upload/equipment-image": {
+      "post": {
+        "tags": [
+          "Uploads"
+        ],
+        "summary": "Upload equipment image to MinIO",
+        "description": "",
+        "parameters": [
+          {
+            "name": "x-forwarded-proto",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-forwarded-host",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "image",
+            "in": "formData",
+            "required": true,
+            "description": "Image file for warehouse equipment",
+            "schema": {
+              "type": "file"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/upload/user-image": {
+      "post": {
+        "tags": [
+          "Uploads"
+        ],
+        "summary": "Upload user avatar/image to MinIO",
+        "description": "",
+        "parameters": [
+          {
+            "name": "x-forwarded-proto",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-forwarded-host",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "image",
+            "in": "formData",
+            "required": true,
+            "description": "Profile image for user",
+            "schema": {
+              "type": "file"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/upload/view/{bucket}/{fileName}": {
+      "get": {
+        "tags": [
+          "Uploads"
+        ],
+        "summary": "View or stream image from MinIO",
+        "description": "",
+        "parameters": [
+          {
+            "name": "bucket",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "MinIO bucket name"
+          },
+          {
+            "name": "fileName",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Object filename in bucket"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/upload/view/{fileName}": {
+      "get": {
+        "tags": [
+          "Uploads"
+        ],
+        "summary": "View or stream equipment image from MinIO",
+        "description": "",
+        "parameters": [
+          {
+            "name": "fileName",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Object filename in warehouse-equipment bucket"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/warehouses/": {
+      "get": {
+        "tags": [
+          "Warehouses"
+        ],
+        "summary": "List all warehouses",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Warehouses"
+        ],
+        "summary": "Create a new warehouse facility",
+        "description": "",
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        }
+      }
+    },
+    "/products/": {
+      "get": {
+        "tags": [
+          "Products"
+        ],
+        "summary": "Get all products and SKU items",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Products"
+        ],
+        "summary": "Register new SKU item",
+        "description": "",
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        }
+      }
+    },
+    "/inventory/": {
+      "get": {
+        "tags": [
+          "Inventory"
+        ],
+        "summary": "Retrieve real-time stock levels across warehouse bins",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/inbound/": {
+      "get": {
+        "tags": [
+          "Inbound"
+        ],
+        "summary": "List all goods receipts (GRN)",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Inbound"
+        ],
+        "summary": "Create Inbound Goods Receipt Note",
+        "description": "",
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        }
+      }
+    },
+    "/outbound/": {
+      "get": {
+        "tags": [
+          "Outbound"
+        ],
+        "summary": "List customer dispatch orders",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Outbound"
+        ],
+        "summary": "Create Outbound Delivery Order",
+        "description": "",
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ]
+}
