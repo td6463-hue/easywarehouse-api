@@ -325,6 +325,29 @@
         ],
         "summary": "List all users from database",
         "description": "",
+        "parameters": [
+          {
+            "name": "store_id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "role_id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -420,6 +443,12 @@
                     "example": "any"
                   },
                   "role_id": {
+                    "example": "any"
+                  },
+                  "store_id": {
+                    "example": "any"
+                  },
+                  "company_id": {
                     "example": "any"
                   }
                 }
@@ -559,6 +588,12 @@
                     "example": "any"
                   },
                   "role_id": {
+                    "example": "any"
+                  },
+                  "store_id": {
+                    "example": "any"
+                  },
+                  "company_id": {
                     "example": "any"
                   }
                 }
@@ -794,10 +829,19 @@
                   "unit": {
                     "example": "any"
                   },
+                  "available_unit": {
+                    "example": "any"
+                  },
                   "in_use": {
                     "example": "any"
                   },
+                  "maintenance_unit": {
+                    "example": "any"
+                  },
                   "broken_unit": {
+                    "example": "any"
+                  },
+                  "out_of_service_unit": {
                     "example": "any"
                   },
                   "cost": {
@@ -978,10 +1022,19 @@
                   "unit": {
                     "example": "any"
                   },
+                  "available_unit": {
+                    "example": "any"
+                  },
                   "in_use": {
                     "example": "any"
                   },
+                  "maintenance_unit": {
+                    "example": "any"
+                  },
                   "broken_unit": {
+                    "example": "any"
+                  },
+                  "out_of_service_unit": {
                     "example": "any"
                   },
                   "cost": {
@@ -2647,6 +2700,468 @@
         }
       }
     },
+    "/equipment-checkouts/stats": {
+      "get": {
+        "tags": [
+          "EquipmentCheckout"
+        ],
+        "summary": "Get summary statistics for equipment checkouts",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/equipment-checkouts/": {
+      "get": {
+        "tags": [
+          "EquipmentCheckout"
+        ],
+        "summary": "List all equipment checkout transactions",
+        "description": "",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "equipment_id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "range_id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "EquipmentCheckout"
+        ],
+        "summary": "Create a Check-Out (issue equipment to borrower)",
+        "description": "",
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "range_id": {
+                    "example": "any"
+                  },
+                  "borrower_name": {
+                    "example": "any"
+                  },
+                  "borrower_phone": {
+                    "example": "any"
+                  },
+                  "borrower_department": {
+                    "example": "any"
+                  },
+                  "user_id": {
+                    "example": "any"
+                  },
+                  "expected_return_date": {
+                    "example": "any"
+                  },
+                  "purpose": {
+                    "example": "any"
+                  },
+                  "checkout_note": {
+                    "example": "any"
+                  },
+                  "created_by": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/equipment-checkouts/{id}": {
+      "get": {
+        "tags": [
+          "EquipmentCheckout"
+        ],
+        "summary": "Get single checkout transaction",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "EquipmentCheckout"
+        ],
+        "summary": "Delete a checkout record",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/equipment-checkouts/{id}/return": {
+      "post": {
+        "tags": [
+          "EquipmentCheckout"
+        ],
+        "summary": "Check-In / Return an issued equipment unit",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "return_condition": {
+                    "example": "any"
+                  },
+                  "return_note": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/checkouts/stats": {
+      "get": {
+        "tags": [
+          "EquipmentCheckout"
+        ],
+        "summary": "Get summary statistics for equipment checkouts",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/checkouts/": {
+      "get": {
+        "tags": [
+          "EquipmentCheckout"
+        ],
+        "summary": "List all equipment checkout transactions",
+        "description": "",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "equipment_id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "range_id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "EquipmentCheckout"
+        ],
+        "summary": "Create a Check-Out (issue equipment to borrower)",
+        "description": "",
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "range_id": {
+                    "example": "any"
+                  },
+                  "borrower_name": {
+                    "example": "any"
+                  },
+                  "borrower_phone": {
+                    "example": "any"
+                  },
+                  "borrower_department": {
+                    "example": "any"
+                  },
+                  "user_id": {
+                    "example": "any"
+                  },
+                  "expected_return_date": {
+                    "example": "any"
+                  },
+                  "purpose": {
+                    "example": "any"
+                  },
+                  "checkout_note": {
+                    "example": "any"
+                  },
+                  "created_by": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/checkouts/{id}": {
+      "get": {
+        "tags": [
+          "EquipmentCheckout"
+        ],
+        "summary": "Get single checkout transaction",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "EquipmentCheckout"
+        ],
+        "summary": "Delete a checkout record",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/checkouts/{id}/return": {
+      "post": {
+        "tags": [
+          "EquipmentCheckout"
+        ],
+        "summary": "Check-In / Return an issued equipment unit",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "return_condition": {
+                    "example": "any"
+                  },
+                  "return_note": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/categories/": {
       "get": {
         "tags": [
@@ -3703,7 +4218,67 @@
                   "address": {
                     "example": "any"
                   },
+                  "latitude": {
+                    "example": "any"
+                  },
+                  "longitude": {
+                    "example": "any"
+                  },
                   "status": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/branches/resolve-location": {
+      "post": {
+        "tags": [
+          "Branches"
+        ],
+        "summary": "Parse or resolve Google Maps URL to extract latitude and longitude",
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Google Maps link or coordinates",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "url": {
+                  "type": "string",
+                  "example": "https://maps.app.goo.gl/..."
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "url": {
                     "example": "any"
                   }
                 }
@@ -3834,6 +4409,12 @@
                     "example": "any"
                   },
                   "address": {
+                    "example": "any"
+                  },
+                  "latitude": {
+                    "example": "any"
+                  },
+                  "longitude": {
                     "example": "any"
                   },
                   "status": {
